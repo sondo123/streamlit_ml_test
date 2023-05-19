@@ -45,7 +45,7 @@ if st.sidebar.button('Display data schema and sample row'):
 
 clf = KNeighborsClassifier(n_neighbors=K)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 clf.fit(X_train, Y_train)
 
