@@ -72,12 +72,25 @@ if st.button("Plot"):
     x1 = X_projected[:, 0]
     x2 = X_projected[:, 1]
 
-    fig = plt.figure()
-    plt.scatter(x1, x2, c=Y_pred, alpha=0.8, cmap="viridis")
+    fig, ax = plt.subplots()
+
+    # Create a color map
+    cmap = plt.cm.rainbow
+    colors = cmap(np.linspace(0, 1, len(data.target_names)))
+
+    # Scatter plot for each class in the test data
+    for i, color in zip(range(len(data.target_names)), colors):
+        idx = np.where(Y_pred == i)
+        ax.scatter(x1[idx], x2[idx], color=color, label=data.target_names[i], alpha=0.8)
+
+    # If new data exists, plot it as a star marker
     if new_data_projected is not None:
         new_x1 = new_data_projected[:, 0]
         new_x2 = new_data_projected[:, 1]
-        plt.scatter(new_x1, new_x2, c=new_data_pred, alpha=1, cmap="viridis", marker='*')
+        for i, color in zip(range(len(data.target_names)), colors):
+            idx = np.where(new_data_pred == i)
+            ax.scatter(new_x1[idx], new_x2[idx], color=color, marker='*', label="New "+data.target_names[i], alpha=1)
 
-    plt.colorbar()
+    plt.legend()
     st.pyplot(fig)
+
